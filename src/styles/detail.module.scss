@@ -1,0 +1,115 @@
+@import 'function';
+@import 'common';
+
+.header {
+    .title {
+        display:flex;
+        flex-wrap:wrap;
+        align-items:center;
+        margin-bottom:1rem;
+    
+        color:$text-block;
+
+        h1 {
+            line-height:1em;
+    
+            strong {
+                margin-right:.5em;
+            }
+            & > span {
+                font-weight:500;
+                color:$text-subtitle;
+            }
+            strong,
+            span:first-child {
+                color:$text-block;
+            }
+    
+            sub {
+                display:block;
+                margin-top:.2rem;
+    
+                color:$text-subtitle;
+                font-weight:400;
+                font-size:.6em;
+                line-height:1.5em;
+            }
+        }
+
+        :global .MuiDivider-root {
+            align-self:inherit;
+            height:2rem;
+            margin:0 2rem;
+
+            border-width:2px;
+            border-color:$divider;
+        }
+    
+        dl {
+            position:relative;
+    
+            font-size:2.2rem;
+            line-height:1;
+    
+            dt {
+                @extend .blind;
+            }
+            dd {
+                @extend .stock;
+                display:inline-block;
+    
+                font-weight:700;
+                
+                :global .change {
+                    margin:0 0 0 .5em;
+    
+                    font-size:.6em;
+                }
+            }
+        }
+    }
+
+    .info {
+        margin:0 -1rem 2rem;
+        padding:.3rem 1rem;
+
+        background-color:rgba($box, .3);
+        border-radius:radius(1);
+        font-size:1.03rem;
+
+        &,
+        dl {
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+        }
+
+        dl {
+            flex-basis:25%;
+            margin:.1rem 0;
+
+            @media screen and (max-width:1500px) {
+                flex-basis:50%;
+            }
+
+            dt {
+                flex-basis:6rem;
+                margin-right:1rem;
+
+                box-sizing:border-box;
+                opacity:.7;
+                white-space:nowrap;
+            }
+
+            dd {
+                font-family: "Roboto", sans-serif;
+            }
+        }
+    }
+}
+
+.chartWrap {
+    @extend .box;
+
+    height:32vw;
+}

@@ -1,0 +1,8 @@
+@function icon($value) {
+    @return $value * 24px;
+}
+@function radius($value) {
+    @return $value * 1rem;
+}
+
+$max-width: 2000px;

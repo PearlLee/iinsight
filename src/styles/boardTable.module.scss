@@ -1,0 +1,88 @@
+@import 'function';
+@import 'common';
+
+.buttonToggleBoard {
+    position:fixed !important;
+    top:1rem;
+    left:calc(20vw - 2rem - 2em);
+
+    background-color:$box;
+    border-radius:100%;
+}
+
+.header {
+    padding:1rem 0;
+
+    :global .MuiFormControl-root {
+        width:100%;
+    }
+}
+
+.table {
+    overflow:hidden;
+    width:100%;
+
+    th,
+    td {
+        & > span {
+            display:block;
+        }
+    }
+
+    thead th {
+        position:relative;
+        width:33.33%;
+        padding:.5em .2em;
+
+        background-color:$table-head-bg;
+        border-bottom:none;
+        color:$table-head-text;
+
+        :global .MuiTableSortLabel-root {
+
+            &:hover {
+                color:$primary;
+            }
+
+            .MuiTableSortLabel-icon {
+                margin:-.2em -1em 0 .2em;
+
+                vertical-align:middle;
+            }
+        }
+
+        :global .divider {
+            display:inline-block;
+            position:absolute;
+            top:calc(50% - .4em);
+            right:0;
+            width:1px;
+            height:.8em;
+
+            background-color:$divider-board;
+            vertical-align:middle;
+        }
+    }
+
+    tbody :global .MuiTableRow-root {
+        &:hover > .MuiTableCell-root {
+            background-color:$button-hover-bg;
+            cursor:pointer;
+        }
+        &.Mui-selected > .MuiTableCell-root {
+            background-color:$button-selected-bg;
+        }
+    }
+    tbody :global .MuiTableCell-root {
+        border-bottom-color:$divider-table;
+    }
+    tbody th:first-child {
+        font-family:inherit;
+        
+        & > span {
+            color:rgba($text, .8);
+            font-size:.9em;
+            font-weight:400;
+        }
+    }
+}
