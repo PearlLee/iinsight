@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { observer } from 'mobx-react';
 import { Box, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 
+import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
 import { IStockData } from '../../interfaces/IStockData';
-import { rows } from '../../stockData';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/boardTable.module.scss';
@@ -76,12 +77,10 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
     );
 }
 
-interface IBoardTableRowProps {
-    isin: string;
-    setIsin: (isin:string) => void;
-}
+export default observer(function BoardTableGrid() {
+    const stockAnalysisStore = useStockAnalysisStore();
+    const { rows } = stockAnalysisStore.boardStore;
 
-export default function BoardTableGrid(props: IBoardTableRowProps) {
     const [order, setOrder] = useState<Order>('desc');
     const [orderBy, setOrderBy] = useState<keyof IStockData>('base_price');
 
@@ -95,7 +94,7 @@ export default function BoardTableGrid(props: IBoardTableRowProps) {
     };
 
     const handleClick = (event: React.MouseEvent<unknown>, isin: string) => {
-        props.setIsin(isin);
+        stockAnalysisStore.setIsin(isin);
     };
 
     const sortFunction = (a: IStockData, b: IStockData): number => {
@@ -117,14 +116,14 @@ export default function BoardTableGrid(props: IBoardTableRowProps) {
     return(<section className={Style.table}>
         <Table>
             <EnhancedTableHead
-                numSelected={rows.findIndex((item) => item.info.isin === props.isin)}
+                numSelected={rows.findIndex((item) => item.info.isin === stockAnalysisStore.isin)}
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
                 rowCount={rows.length}
             />
             <TableBody>
-                {rows.sort(sortFunction).map((row, index) => {
+                {rows.slice().sort(sortFunction).map((row, index) => {
                     const { isin, ticker } = row.info;
                     const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -134,7 +133,7 @@ export default function BoardTableGrid(props: IBoardTableRowProps) {
                             role="checkbox"
                             tabIndex={-1}
                             key={index}
-                            selected={isin === props.isin}
+                            selected={isin === stockAnalysisStore.isin}
                             onClick={(event) => handleClick(event, isin)}
                         >
                             <TableCell
@@ -158,4 +157,4 @@ export default function BoardTableGrid(props: IBoardTableRowProps) {
             </TableBody>
         </Table>
     </section>);
-}
+});

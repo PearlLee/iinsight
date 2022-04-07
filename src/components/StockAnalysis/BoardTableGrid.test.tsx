@@ -1,24 +1,31 @@
-import { render, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 
-import { rows } from '../../stockData';
+import renderWithRootStore from '../../test/renderWithRootStore';
+import RootStore from '../../stores/RootStore';
 import BoardTableGrid from './BoardTableGrid';
 
 describe('StockAnalysis/BoardTableGrid', () => {
     test('check default list', () => {
-        render(<BoardTableGrid isin={rows[0].info.isin} setIsin={jest.fn()}/>);
+        const rootStore = new RootStore();
+        const { rows } = rootStore.stockAnalysisStore.boardStore;
+
+        renderWithRootStore(<BoardTableGrid/>, rootStore);
         const tbody = document.querySelector('tbody');
         expect(tbody?.querySelectorAll("tr").length === rows.length).toBeTruthy();
     });
 
     test('check send isin to prop', () => {
-        let mockSetIsin = jest.fn();
-        render(<BoardTableGrid isin={rows[0].info.isin} setIsin={mockSetIsin} />);
-        const tbody = document.querySelector('tbody');
-        expect(tbody?.querySelectorAll("tr").length === rows.length).toBeTruthy();
+        const rootStore = new RootStore();
+        const { rows } = rootStore.stockAnalysisStore.boardStore;
 
-        tbody?.querySelectorAll("tr")[1].click();
+        renderWithRootStore(<BoardTableGrid />, rootStore);
+        act(() => {
+            const tbody = document.querySelector('tbody');
+            expect(tbody?.querySelectorAll("tr").length === rows.length).toBeTruthy();
 
-        expect(mockSetIsin.mock.calls.length == 1).toBeTruthy();
-        expect(mockSetIsin.mock.calls[0][0] === rows[1].info.isin).toBeTruthy();
+            tbody?.querySelectorAll("tr")[1].click();
+        });
+
+        expect(rootStore.stockAnalysisStore.isin === rows[1].info.isin).toBeTruthy();
     });
 });

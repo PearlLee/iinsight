@@ -1,12 +1,13 @@
-import { rows } from '../../stockData';
+import { observer } from 'mobx-react';
 import DetailHeader from './DetailHeader';
 import DetailChart from './DetailChart';
+import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
 
-interface IDetailProps {
-    isin: string;
-}
-export default function Detail(props: IDetailProps) {
-    const row = rows.find((item) => item.info.isin === props.isin);
+export default observer(function Detail() {
+    const stockAnalysisStore = useStockAnalysisStore();
+    const { rows } = stockAnalysisStore.boardStore;
+
+    const row = rows.find((item) => item.info.isin === stockAnalysisStore.isin);
 
     return(<section className="detailContainer">
         {row === undefined && 
@@ -14,9 +15,9 @@ export default function Detail(props: IDetailProps) {
         }
         {row !== undefined &&
             <>
-                <DetailHeader isin={props.isin} />
+                <DetailHeader isin={stockAnalysisStore.isin} />
                 <DetailChart />
             </>
         }
     </section>);
-};
+});

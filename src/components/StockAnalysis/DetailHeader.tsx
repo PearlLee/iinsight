@@ -1,6 +1,7 @@
+import { observer } from 'mobx-react';
 import { Divider } from '@mui/material';
 
-import { rows } from '../../stockData';
+import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/detail.module.scss';
@@ -8,10 +9,16 @@ import Style from '../../styles/detail.module.scss';
 interface IDetailProps {
     isin: string;
 }
-export default function DetailHeader(props: IDetailProps) {
+export default observer(function Detail(props: IDetailProps) {
+    const stockAnalysisStore = useStockAnalysisStore();
+    const { rows } = stockAnalysisStore.boardStore;
+
     const row = rows.find((item) => item.info.isin === props.isin);
 
-    return(<>
+    return(<section className="detailContainer">
+        {row === undefined && 
+            <p>데이터 없음</p>
+        }
         {row !== undefined &&
             <header className={Style.header}>
                 <div className={Style.title}>
@@ -46,5 +53,10 @@ export default function DetailHeader(props: IDetailProps) {
                 </div>
             </header>
         }
-    </>);
-}
+        
+
+        <section className={Style.chartWrap}>
+            {/* 차트 */}
+        </section>
+    </section>);
+});

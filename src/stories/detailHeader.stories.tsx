@@ -1,20 +1,19 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 
 import '../styles/app.scss';
-import { rows } from '../stockData';
-import Detail from '../components/StockAnalysis/Detail';
 import DetailHeader from '../components/StockAnalysis/DetailHeader';
+import RootStore from '../stores/RootStore';
+import { RootStoreProvider } from '../providers/RootStoreProvider';
 
 export default {
     title: 'Component/Detail',
-    component: Detail,
+    component: DetailHeader,
     argTypes: {
     },
-  } as ComponentMeta<typeof Detail>;
+} as ComponentMeta<typeof DetailHeader>;
 
-const detailHeaderTemplate: ComponentStory<typeof DetailHeader> = (args) => <DetailHeader {...args} />;
-export const detailHeader = detailHeaderTemplate.bind({});
-const isin = rows.length > 0 ? rows[0].info.isin : '';
-detailHeader.args = {
-  isin: isin
-}
+
+export const detailHeader = () => {
+    const rootStore = new RootStore();
+    return <RootStoreProvider rootStore={rootStore}><DetailHeader isin={rootStore.stockAnalysisStore.isin} /></RootStoreProvider>
+};

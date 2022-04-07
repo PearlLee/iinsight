@@ -7,7 +7,7 @@ import BoardTab from '../components/StockAnalysis/BoardTab';
 export default {
     title: 'Component/Board',
     component: BoardTable
-  } as ComponentMeta<typeof BoardTable>;
+} as ComponentMeta<typeof BoardTable>;
 
 const Template: ComponentStory<typeof BoardTab> = () => <BoardTab />;
 export const boardTab = Template.bind({});

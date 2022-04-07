@@ -5,18 +5,10 @@ import { RootStoreProvider } from './providers/RootStoreProvider';
 import GNB from './components/GNB';
 import Detail from './components/StockAnalysis/Detail';
 import BoardTable from './components/StockAnalysis/BoardTable';
-import { rows } from './stockData';
 
 import './styles/app.scss';
 
 function App() {
-    const getDefaultIsin = () => {
-        if (rows.length > 0) {
-            return rows[0].info.isin;
-        }
-        return '';
-    }
-    const [isin, setIsin] = useState(getDefaultIsin());
     const [toggle, setToggle] = useState(true);
 
     //화면 너비 체크
@@ -45,8 +37,8 @@ function App() {
         <ThemeProvider theme={theme}>
             <GNB index={0} toggleBoard={setToggleBoard} media={media} />
             <section className="container">
-                <Detail isin={isin} />
-                <BoardTable isin={isin} setIsin={setIsin} toggle={toggle} toggleBoard={setToggleBoard} media={media} />
+                <Detail />
+                <BoardTable toggle={toggle} toggleBoard={setToggleBoard} media={media} />
             </section>
         </ThemeProvider>
     </RootStoreProvider>);

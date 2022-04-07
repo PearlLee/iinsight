@@ -7,8 +7,6 @@ import BoardTableGrid from './BoardTableGrid';
 import Style from '../../styles/boardTable.module.scss';
 
 interface IBoardTableProps {
-    isin: string;
-    setIsin : (index:string) => void;
     toggle: boolean;
     toggleBoard: (value: boolean) => void;
     media: string;
@@ -31,7 +29,7 @@ export default function BoardTable(props: IBoardTableProps) {
         <div>
             <BoardTab />
             <BoardTableHeader />
-            <BoardTableGrid isin={props.isin} setIsin={props.setIsin} />
+            <BoardTableGrid  />
         </div>
     </section>);
 }
