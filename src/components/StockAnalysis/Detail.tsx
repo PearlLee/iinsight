@@ -19,4 +19,4 @@ export default function Detail(props: IDetailProps) {
             </>
         }
     </section>);
-}
+};
