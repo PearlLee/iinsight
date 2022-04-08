@@ -111,5 +111,10 @@
 .chartWrap {
     @extend .box;
 
-    height:32vw;
+    @media screen and (min-width:$max-width) {
+        height:calc((#{$max-width} * .8 - 4rem) * .6);
+    }
+    @media screen and (max-width:$max-width) {
+        height:calc((80vw - 4rem) * .6);
+    }
 }

@@ -3,10 +3,14 @@
 @import 'common';
 @import 'function';
 
-body {
+html, body {
     background-color:$bg;
     color:$text;
-    font: 14px/1.5em -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font: 16px/1.5em -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    @media screen and (max-width:600px) {
+        font-size:14px;
+    }
 }
 .container {
     display:flex;
