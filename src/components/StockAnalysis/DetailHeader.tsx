@@ -15,7 +15,7 @@ export default observer(function Detail(props: IDetailProps) {
 
     const row = rows.find((item) => item.info.isin === props.isin);
 
-    return(<section className="detailContainer">
+    return(<>
         {row === undefined && 
             <p>데이터 없음</p>
         }
@@ -53,10 +53,5 @@ export default observer(function Detail(props: IDetailProps) {
                 </div>
             </header>
         }
-        
-
-        <section className={Style.chartWrap}>
-            {/* 차트 */}
-        </section>
-    </section>);
+    </>);
 });
