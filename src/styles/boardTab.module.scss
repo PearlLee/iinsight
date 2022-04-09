@@ -17,12 +17,11 @@
 
     .tabs {
         :global .MuiTabs-flexContainer {
-
             & > button {
-                flex-basis:20%;
-                min-width:3em;
+                min-width:20%;
 
                 font-size:1.01rem;
+                white-space:nowrap;
 
                 &[aria-selected="true"] {
                     color:$primary;
