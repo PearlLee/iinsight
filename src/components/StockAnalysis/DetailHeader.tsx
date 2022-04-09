@@ -11,9 +11,6 @@ export default observer(function Detail() {
     const { headerData } = stockAnalysisStore.detailStore;
 
     return(<>
-        {headerData === null && 
-            <p>데이터 없음</p>
-        }
         {headerData !== null &&
             <header className={Style.header}>
                 <div className={Style.title}>
