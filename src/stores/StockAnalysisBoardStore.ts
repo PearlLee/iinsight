@@ -5,17 +5,13 @@ import StockAnalysisStore from "./StockAnalysisStore";
 
 export default class StockAnalysisBoardStore {
     rows:IStockBoardData[];
-    _stockAnalysisStore: StockAnalysisStore;
+    private _stockAnalysisStore: StockAnalysisStore;
 
     constructor(stockAnalysisStore: StockAnalysisStore) {
         this._stockAnalysisStore = stockAnalysisStore;
         this.rows = [];
 
-        makeAutoObservable(this, {
-                rows: observable.shallow,
-                _stockAnalysisStore: false
-            }
-        );
+        makeAutoObservable(this, { rows: observable.shallow });
         this.fetchBoard("hold");
     }
 
