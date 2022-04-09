@@ -1,3 +1,4 @@
+import IDetailResult from "./interfaces/api/IDetailResult";
 import IRankResult from "./interfaces/api/IRankResult";
 
 export async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
@@ -12,4 +13,8 @@ export async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promis
 
 export async function getRank(type: string): Promise<IRankResult> {
     return await fetcher<IRankResult>(`/api/stock_analysis/ranks/${type}/`);
+}
+
+export async function getDetail(isin: string): Promise<IDetailResult> {
+    return await fetcher<IDetailResult>(`/api/stock_analysis/${isin}`);
 }

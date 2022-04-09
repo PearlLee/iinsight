@@ -1,23 +1,22 @@
 import { makeAutoObservable } from "mobx";
 import StockAnalysisBoardStore from "./StockAnalysisBoardStore";
+import StockAnalysisDetailStore from "./StockAnalysisDetailStore";
 
 export default class StockAnalysisStore {
+    detailStore: StockAnalysisDetailStore;
     boardStore: StockAnalysisBoardStore;
     isin: string;
 
     constructor() {
-        this.boardStore = new StockAnalysisBoardStore();
+        this.boardStore = new StockAnalysisBoardStore(this);
+        this.detailStore = new StockAnalysisDetailStore();
         this.isin = "";
-
-        const { rows } = this.boardStore;
-        if (rows.length > 0) {
-            this.isin = rows[0].info.isin;
-        }
 
         makeAutoObservable(this);
     }
 
     setIsin(isin: string): void {
         this.isin = isin;
+        this.detailStore.updateData(isin);
     }
 }

@@ -1,39 +1,42 @@
-import { makeAutoObservable, observable } from "mobx";
-import { IStockData } from '../interfaces/IStockData';
-
-type Info = IStockData['info'];
+import { makeAutoObservable, observable, runInAction } from "mobx";
+import { getRank } from "../api";
+import IStockBoardData from "../interfaces/IStockBoardData";
+import StockAnalysisStore from "./StockAnalysisStore";
 
 export default class StockAnalysisBoardStore {
-    rows:IStockData[];
+    rows:IStockBoardData[];
+    _stockAnalysisStore: StockAnalysisStore;
 
-    constructor() {
-        this.rows = [
-            this._createData({isin: 'US88160R1014', ticker: '1TSLA', name: 'TESLA INC', slang: '테슬라'}, 1029.93, 20.17, 1.96, 1050.1, 1751519000, 79857061000, 50315547000),
-            this._createData({isin: 'US0378331005', ticker: '2AAPL', name: 'APPLE INC', slang: '애플'}, 169.83, -3.18, -1.87, 1050.1, 1651519000, 79857061000, 50315547000)
-        ];
+    constructor(stockAnalysisStore: StockAnalysisStore) {
+        this._stockAnalysisStore = stockAnalysisStore;
+        this.rows = [];
 
-        makeAutoObservable(this, {rows: observable.shallow});
+        makeAutoObservable(this, {
+            rows: observable.shallow,
+            _stockAnalysisStore: false}
+        );
+        this.fetchBoard("hold");
     }
 
-    private _createData(
-        info: Info,
-        base_price: number,
-        change_price: number,
-        change_percent: number,
-        prev_price: number,
-        hold_amount: number,
-        buy_amount: number,
-        sell_amount: number
-    ): IStockData {
-        return {
-            info,
-            base_price,
-            change_price,
-            change_percent,
-            prev_price,
-            hold_amount,
-            buy_amount,
-            sell_amount
-        };
+    async fetchBoard(type: string) {
+        const rankResult = await getRank(type);
+
+        runInAction(() => {
+            this.rows = rankResult.result.map<IStockBoardData>((element) => {
+                return {
+                    info: element.stockinfo,
+                    base_price: element.base_price,
+                    prev_price: element.prev_price,
+                    hold_amount: element.hold_amount,
+                    change_price: element.base_price - element.prev_price,
+                    change_percent: (element.base_price - element.prev_price) / element.base_price * 100,
+                    buy_amount: element.buy_amount,
+                    sell_amount: element.sell_amount,
+                }
+            });
+            if (this._stockAnalysisStore.isin === "" && this.rows.length > 0) {
+                this._stockAnalysisStore.setIsin(this.rows[0].info.isin);
+            }
+        });
     }
 }

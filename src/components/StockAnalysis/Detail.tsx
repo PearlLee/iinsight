@@ -5,17 +5,15 @@ import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
 
 export default observer(function Detail() {
     const stockAnalysisStore = useStockAnalysisStore();
-    const { rows } = stockAnalysisStore.boardStore;
-
-    const row = rows.find((item) => item.info.isin === stockAnalysisStore.isin);
+    const { headerData } = stockAnalysisStore.detailStore;
 
     return(<section className="detailContainer">
-        {row === undefined && 
+        {headerData === null && 
             <p>데이터 없음</p>
         }
-        {row !== undefined &&
+        {headerData !== null &&
             <>
-                <DetailHeader isin={stockAnalysisStore.isin} />
+                <DetailHeader />
                 <DetailChart />
             </>
         }

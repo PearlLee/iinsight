@@ -6,29 +6,24 @@ import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/detail.module.scss';
 
-interface IDetailProps {
-    isin: string;
-}
-export default observer(function Detail(props: IDetailProps) {
+export default observer(function Detail() {
     const stockAnalysisStore = useStockAnalysisStore();
-    const { rows } = stockAnalysisStore.boardStore;
-
-    const row = rows.find((item) => item.info.isin === props.isin);
+    const { headerData } = stockAnalysisStore.detailStore;
 
     return(<>
-        {row === undefined && 
+        {headerData === null && 
             <p>데이터 없음</p>
         }
-        {row !== undefined &&
+        {headerData !== null &&
             <header className={Style.header}>
                 <div className={Style.title}>
-                    <h1>{row.info.slang && <strong>{row.info.slang}</strong>}<span>{row.info.ticker}</span><sub>{row.info.name}</sub></h1>
+                    <h1>{headerData.info.slang && <strong>{headerData.info.slang}</strong>}<span>{headerData.info.ticker}</span><sub>{headerData.info.name}</sub></h1>
                     <Divider orientation="vertical" flexItem />
                     <dl className={Style.price}>
                         <dt>기준가</dt>
                         <dd>
-                            {row.base_price}
-                            <Change point={row.change_price} percent={row.change_percent} />
+                            {headerData.base_price}
+                            <Change point={headerData.change_price} percent={headerData.change_percent} />
                         </dd>
                     </dl>
                 </div>
@@ -36,19 +31,19 @@ export default observer(function Detail(props: IDetailProps) {
                 <div className={Style.info}>
                     <dl>
                         <dt>전일 가격</dt>
-                        <dd>{row.prev_price}</dd>
+                        <dd>{headerData.prev_price}</dd>
                     </dl>
                     <dl>
                         <dt>보유 금액<IconDollar /></dt>
-                        <dd>{row.hold_amount}</dd>
+                        <dd>{headerData.hold_amount}</dd>
                     </dl>
                     <dl>
                         <dt>매수 결제<IconDollar /></dt>
-                        <dd>{row.buy_amount}</dd>
+                        <dd>{headerData.buy_amount}</dd>
                     </dl>
                     <dl>
                         <dt>매도 결제<IconDollar /></dt>
-                        <dd>{row.sell_amount}</dd>
+                        <dd>{headerData.sell_amount}</dd>
                     </dl>
                 </div>
             </header>

@@ -4,7 +4,7 @@ import { Box, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel }
 import { visuallyHidden } from '@mui/utils';
 
 import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
-import { IStockData } from '../../interfaces/IStockData';
+import IStockBoardData from '../../interfaces/IStockBoardData';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/boardTable.module.scss';
@@ -12,7 +12,7 @@ import Style from '../../styles/boardTable.module.scss';
 type Order = 'asc' | 'desc';
 
 interface IHeadCell {
-    index: keyof IStockData;
+    index: keyof IStockBoardData;
     label: string;
 }
 
@@ -33,7 +33,7 @@ const headCells: readonly IHeadCell[] = [
 
 interface IEnhancedTableProps {
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IStockData) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IStockBoardData) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
@@ -43,7 +43,7 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
     const { order, orderBy, onRequestSort } =
         props;
     const createSortHandler =
-        (property: keyof IStockData) => (event: React.MouseEvent<unknown>) => {
+        (property: keyof IStockBoardData) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -82,11 +82,11 @@ export default observer(function BoardTableGrid() {
     const { rows } = stockAnalysisStore.boardStore;
 
     const [order, setOrder] = useState<Order>('desc');
-    const [orderBy, setOrderBy] = useState<keyof IStockData>('base_price');
+    const [orderBy, setOrderBy] = useState<keyof IStockBoardData>('base_price');
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
-        property: keyof IStockData,
+        property: keyof IStockBoardData,
       ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -97,7 +97,7 @@ export default observer(function BoardTableGrid() {
         stockAnalysisStore.setIsin(isin);
     };
 
-    const sortFunction = (a: IStockData, b: IStockData): number => {
+    const sortFunction = (a: IStockBoardData, b: IStockBoardData): number => {
         if (orderBy === 'info') {
             let result = a.info.ticker.localeCompare(b.info.ticker);
             return order === 'asc'? result: result*-1;

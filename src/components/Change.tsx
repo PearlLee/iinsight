@@ -18,7 +18,7 @@ export default function Change(props: IChangeProps) {
     );
 
     return(<span className="change" data-sign={sign}>
-        {signStr}{props.point}
-        <span className="percent">{signStr}{props.percent}%</span>
+        {signStr}{props.point.toFixed(2)}
+        <span className="percent">{signStr}{props.percent.toFixed(2)}%</span>
     </span>)
 }
