@@ -12,8 +12,9 @@ export default class StockAnalysisBoardStore {
         this.rows = [];
 
         makeAutoObservable(this, {
-            rows: observable.shallow,
-            _stockAnalysisStore: false}
+                rows: observable.shallow,
+                _stockAnalysisStore: false
+            }
         );
         this.fetchBoard("hold");
     }
