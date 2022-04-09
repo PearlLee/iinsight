@@ -19,8 +19,12 @@
 }
 
 .table {
-    overflow:hidden;
     width:100%;
+
+    @media screen and (min-width:$max-width) {
+        overflow:auto;
+        max-height:calc(100vh - 200px - 8rem);
+    }
 
     th,
     td {
