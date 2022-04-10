@@ -1,16 +1,15 @@
+import { NavLink as RouterLink } from 'react-router-dom';
 import { Button, Stack, IconButton } from '@mui/material';
 import { PushPin, Menu, MovingOutlined } from '@mui/icons-material';
 
 import Style from '../styles/header.module.scss';
 
 interface IGNBProps {
-    index: number;
     toggleBoard: (value: boolean) => void;
     media: string;
 }
-export default function GNB(props: IGNBProps) {
-    const index = props.index;
 
+export default function GNB(props: IGNBProps) {
     const handlerToggleBoard = () => {
         props.toggleBoard(false);
     }
@@ -36,14 +35,14 @@ export default function GNB(props: IGNBProps) {
                 direction="row" 
                 className={Style.menu}
             >
-                <Button href="/" aria-selected={index === 0}>
+                <RouterLink to="/stockAnalysis" className={({isActive}) => isActive? "active" :""}>
                     <PushPin className="iconPin" />
                     종목 분석
-                </Button>
-                <Button aria-selected={index === 1} disabled>
+                </RouterLink>
+                <RouterLink to="/marketAnalysis" className={({isActive}) => isActive? "active" :""}>
                     <PushPin className="iconPin" />
                     시장 분석
-                </Button>
+                </RouterLink>
             </Stack>
             {
                 props.media === 'small' &&

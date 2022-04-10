@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import { Divider } from '@mui/material';
 
-import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
+import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
 import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';
 import IconDollar from '../IconDollar';

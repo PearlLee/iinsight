@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import DetailHeader from './DetailHeader';
 import DetailCharts from './DetailCharts';
-import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
+import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
 
 export default observer(function Detail() {
     const stockAnalysisStore = useStockAnalysisStore();

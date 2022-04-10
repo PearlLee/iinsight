@@ -16,6 +16,13 @@ export default class StockAnalysisStore {
     }
 
     setIsin(isin: string): void {
+        if (this.isin === isin) return;
+
+        const path = `/stockAnalysis/${isin}`;
+        if ( window.location.pathname !== path ) {
+            window.history.pushState({}, "", `/stockAnalysis/${isin}`);
+        }
+
         this.isin = isin;
         this.detailStore.updateData(isin);
     }

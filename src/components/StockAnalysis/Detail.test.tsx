@@ -1,26 +1,26 @@
 import { screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
-import RootStore from '../../stores/RootStore';
-import renderWithRootStore from '../../test/renderWithRootStore';
+import StockAnalysisStore from '../../stores/StockAnalysisStore';
+import { renderWithStockAnalysisStore } from '../../test/renderWithStore';
 import Detail from './Detail';
 
 describe('StockAnalysis/Detail', () => {
     test('Has no data', () => {
-        const rootStore = new RootStore();
-        rootStore.stockAnalysisStore.setIsin('');
+        const stockAnalysisStore = new StockAnalysisStore();
+        stockAnalysisStore.setIsin('');
 
-        renderWithRootStore(<Detail/>, rootStore);
+        renderWithStockAnalysisStore(<Detail/>, stockAnalysisStore);
 
         const noDataText = screen.getByText('데이터 없음');
         expect(noDataText).toBeTruthy();
     });
 
     test('has data', () => {
-        const rootStore = new RootStore();
-        const { rows } = rootStore.stockAnalysisStore.boardStore;
+        const stockAnalysisStore = new StockAnalysisStore();
+        const { rows } = stockAnalysisStore.boardStore;
 
-        renderWithRootStore(<Detail/>, rootStore);
+        renderWithStockAnalysisStore(<Detail/>, stockAnalysisStore);
         const nameText = screen.getByText(rows[0].info.name);
         expect(nameText).toBeTruthy();
     });

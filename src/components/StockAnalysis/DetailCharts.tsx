@@ -5,7 +5,7 @@ import moment from "moment";
 import memoize from "memoize-one";
 
 import { IStockDetailStat } from "../../interfaces/IStockDetailData";
-import { useStockAnalysisStore } from "../../providers/RootStoreProvider";
+import { useStockAnalysisStore } from "../../providers/StockStoreProvider";
 import Style from '../../styles/detail.module.scss';
 
 interface StockDetailChartsViewProps {

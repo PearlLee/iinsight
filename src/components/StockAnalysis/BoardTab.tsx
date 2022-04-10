@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import { Tabs, Tab } from '@mui/material';
 
 import Style from '../../styles/boardTab.module.scss';
-import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
+import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
 
 export default function BoardTab() {
-
     const [activeItem, setActiveItem] = useState(0);
     const { boardStore } = useStockAnalysisStore();
 

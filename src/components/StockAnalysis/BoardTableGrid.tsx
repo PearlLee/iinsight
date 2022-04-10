@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Box, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel, Skeleton, Typography } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 
-import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
+import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
 import IStockBoardData from '../../interfaces/IStockBoardData';
 import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';

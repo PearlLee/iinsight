@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import renderWithRootStore from './test/renderWithRootStore';
+import { renderWithStockAnalysisStore } from './test/renderWithStore';
 import App from './App';
 
 describe('App', () => {
@@ -14,7 +14,7 @@ describe('App', () => {
     })
 
     test('Check the main menu is stock analysis', () => {
-        renderWithRootStore(<App />);
+        renderWithStockAnalysisStore(<App />);
         const stockAnalysis = screen.getByText('종목 분석');
         expect(stockAnalysis).toHaveAttribute('aria-selected', "true");
     });

@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
-import { theme } from './styles/theme';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from '@mui/material/styles';
-import { RootStoreProvider } from './providers/RootStoreProvider';
+
+import { theme } from './styles/theme';
 import GNB from './components/GNB';
-import Detail from './components/StockAnalysis/Detail';
-import BoardTable from './components/StockAnalysis/BoardTable';
-
+import StockAnalysis from './components/StockAnalysis';
+import NotFound from './components/NotFound';
 import './styles/app.scss';
-import RootStore from './stores/RootStore';
-
-const rootStore = new RootStore();
 
 function App() {
     const [toggle, setToggle] = useState(true);
@@ -36,15 +33,20 @@ function App() {
         setToggle(value);
     }
 
-    return (<RootStoreProvider rootStore={rootStore}>
+    return (
         <ThemeProvider theme={theme}>
-            <GNB index={0} toggleBoard={setToggleBoard} media={media} />
-            <section className="container">
-                <Detail />
-                <BoardTable toggle={toggle} toggleBoard={setToggleBoard} media={media} />
-            </section>
+            <Router>
+                <GNB toggleBoard={setToggleBoard} media={media} />
+                <Routes>
+                    <Route path="/" element={<Navigate replace to="/stockAnalysis" />} />
+                    <Route path="stockAnalysis" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />}>
+                        <Route path=":isin" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />} />
+                    </Route>
+                    <Route path="*" element={() => <NotFound />}/>
+                </Routes>
+            </Router>
         </ThemeProvider>
-    </RootStoreProvider>);
+        );
 }
 
 export default App;
