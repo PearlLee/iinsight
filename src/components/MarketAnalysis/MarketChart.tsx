@@ -68,7 +68,7 @@ class MarketChartView extends Component<ViewProps, ViewState> {
             {
                 data: stats.map((row: IMarketAnalysisData) => {
                     return {
-                        x: row.stockinfo.ticker,
+                        x: row.stockinfo.ticker || row.stockinfo.name,
                         y: row.hold_amount,
                         ...row,
                     };
