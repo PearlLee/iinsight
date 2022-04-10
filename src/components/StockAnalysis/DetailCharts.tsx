@@ -79,6 +79,9 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                         color: "#00E396",
                     },
                 },
+                tooltip: {
+                    enabled: false,
+                },
                 min: hold_amount_min,
                 max: hold_amount_max,
             },
@@ -101,6 +104,9 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                         color: "#00E396",
                     },
                 },
+                tooltip: {
+                    enabled: false,
+                },
                 min: hold_quantify_min,
                 max: hold_quantify_max,
             },
@@ -118,6 +124,9 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                 title: {
                     text: "Buy Amount",
                 },
+                tooltip: {
+                    enabled: false,
+                },
                 min: buy_sell_amount_min,
                 max: buy_sell_amount_max,
             },
@@ -134,6 +143,9 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                 },
                 title: {
                     text: "Sell Amount",
+                },
+                tooltip: {
+                    enabled: false,
                 },
                 min: buy_sell_amount_min,
                 max: buy_sell_amount_max,
@@ -158,7 +170,7 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                 },
             },
             tooltip: {
-                enabled: true,
+                enabled: false,
             },
             min: volume_min,
             max: volume_max,
