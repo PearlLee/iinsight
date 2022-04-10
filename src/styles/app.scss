@@ -50,6 +50,7 @@ html, body {
         right:0;
         bottom:0;
         overflow:auto;
+        z-index:99;
         margin:0;
         padding-left:4em;
 
@@ -57,10 +58,12 @@ html, body {
 
         &[area-hidden="true"] {
             overflow:hidden;
+            z-index:-999;
             min-width:0;
             width:0;
 
             opacity:0;
+            pointer-events:none;
         }
 
         & > div {

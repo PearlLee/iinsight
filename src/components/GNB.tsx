@@ -18,10 +18,19 @@ export default function GNB(props: IGNBProps) {
     return(
         <section className={Style.header}>
             <h1>
-                <Button href="/">
-                    <MovingOutlined />
-                    Iinsight
-                </Button>
+                {
+                    props.media === 'large' &&
+                    <Button href="/">
+                        <MovingOutlined />
+                        <span>Iinsight</span>
+                    </Button>
+                }
+                {
+                    props.media === 'small' &&
+                    <IconButton href="/">
+                        <MovingOutlined />
+                    </IconButton>
+                }
             </h1>
             <Stack 
                 direction="row" 

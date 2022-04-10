@@ -110,11 +110,20 @@
 
 .chartWrap {
     @extend .box;
+    padding:2rem 1rem;
 
-    @media screen and (min-width:$max-width) {
-        height:calc((#{$max-width} * .8 - 4rem) * .6);
+    box-sizing:border-box;
+
+    & > div {
+        &:not(:last-child) {
+            margin-bottom:2rem;
+        }
     }
-    @media screen and (max-width:$max-width) {
-        height:calc((80vw - 4rem) * .6);
+
+    :global .apexcharts-canvas {
+        &,
+        & > svg {
+            width:100% !important;
+        }
     }
 }

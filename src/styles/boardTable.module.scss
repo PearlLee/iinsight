@@ -21,11 +21,14 @@
 .table {
     width:100%;
 
-    @media screen and (min-width:$max-width) {
+    @media screen and (min-width:1200px) {
         overflow:auto;
         max-height:calc(100vh - 200px - 8rem);
     }
 
+    table {
+        table-layout:fixed;
+    }
     th,
     td {
         & > span {

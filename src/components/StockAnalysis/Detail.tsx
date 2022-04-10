@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import DetailHeader from './DetailHeader';
-import DetailChart from './DetailChart';
+import DetailCharts from './DetailCharts';
 import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
 
 export default observer(function Detail() {
@@ -14,7 +14,7 @@ export default observer(function Detail() {
         {headerData !== null &&
             <>
                 <DetailHeader />
-                <DetailChart />
+                <DetailCharts />
             </>
         }
     </section>);

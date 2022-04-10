@@ -7,8 +7,10 @@ import Detail from './components/StockAnalysis/Detail';
 import BoardTable from './components/StockAnalysis/BoardTable';
 
 import './styles/app.scss';
+import RootStore from './stores/RootStore';
 
 function App() {
+    const [rootStore, _setRootStore] = useState<RootStore>(new RootStore());
     const [toggle, setToggle] = useState(true);
 
     //화면 너비 체크
@@ -33,7 +35,7 @@ function App() {
         setToggle(value);
     }
 
-    return (<RootStoreProvider>
+    return (<RootStoreProvider rootStore={rootStore}>
         <ThemeProvider theme={theme}>
             <GNB index={0} toggleBoard={setToggleBoard} media={media} />
             <section className="container">
