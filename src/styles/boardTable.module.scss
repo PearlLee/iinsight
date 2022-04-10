@@ -93,4 +93,18 @@
             white-space:break-spaces;
         }
     }
+    tbody :global .isLoading > * {
+        padding:.2rem 1rem;
+
+        .MuiSkeleton-root {
+            width:60% !important;
+        }
+        & > .MuiSkeleton-root:first-child  {
+            width:90% !important;
+        }
+
+        &:last-child .MuiSkeleton-root {
+            margin:0 auto;
+        }
+    }
 }

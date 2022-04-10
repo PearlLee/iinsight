@@ -9,8 +9,9 @@ import BoardTable from './components/StockAnalysis/BoardTable';
 import './styles/app.scss';
 import RootStore from './stores/RootStore';
 
+const rootStore = new RootStore();
+
 function App() {
-    const [rootStore, _setRootStore] = useState<RootStore>(new RootStore());
     const [toggle, setToggle] = useState(true);
 
     //화면 너비 체크

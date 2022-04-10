@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Box, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel } from '@mui/material';
+import { Box, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel, Skeleton, Typography } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 
 import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
@@ -17,27 +17,14 @@ interface IHeadCell {
     label: string;
 }
 
-const headCells: readonly IHeadCell[] = [
-    {
-        index: 'info',
-        label: '종목명',
-    },
-    {
-        index: 'base_price',
-        label: '기준가',
-    },
-    {
-        index: 'hold_amount',
-        label: '보유잔고',
-    }
-];
-
 interface IEnhancedTableProps {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IStockBoardData) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
+    dataKey: keyof IStockBoardData;
+    dataLabel: string;
 }
 
 function EnhancedTableHead(props: IEnhancedTableProps) {
@@ -47,6 +34,21 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
         (property: keyof IStockBoardData) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
+
+    let headCells: IHeadCell[] = [
+        {
+            index: 'info',
+            label: '종목명',
+        },
+        {
+            index: 'base_price',
+            label: '기준가',
+        },
+        {
+            index: props.dataKey,
+            label: props.dataLabel,
+        }
+    ];
 
     return (
         <TableHead>
@@ -63,7 +65,7 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
                             onClick={createSortHandler(headCell.index)}
                         >
                             {headCell.label}
-                            {headCell.index === 'hold_amount' && <IconDollar />}
+                            {index === 2 && <IconDollar />}
                             {orderBy === headCell.index ? (
                                 <Box component="span" sx={visuallyHidden}>
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -80,7 +82,7 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
 
 export default observer(function BoardTableGrid() {
     const stockAnalysisStore = useStockAnalysisStore();
-    const { rows } = stockAnalysisStore.boardStore;
+    const { rows, selectedTab, isLoading } = stockAnalysisStore.boardStore;
 
     const [order, setOrder] = useState<Order>('desc');
     const [orderBy, setOrderBy] = useState<keyof IStockBoardData>('base_price');
@@ -114,6 +116,48 @@ export default observer(function BoardTableGrid() {
         }
     }
 
+    let dataKey: keyof IStockBoardData = 'hold_amount';
+    let dataLabel = '보유 금액';
+
+    switch(selectedTab) {
+        case "hold":
+            {
+                dataKey = 'hold_amount';
+                dataLabel = '보유 금액';
+                break;
+            }
+        case "buy":
+            {
+                dataKey = 'buy_amount';
+                dataLabel = '매수 금액';
+                break;
+            }
+        case "sell":
+            {
+                dataKey = 'sell_amount';
+                dataLabel = '매도 금액';
+                break;
+            }
+        case "net_buy":
+            {
+                dataKey = 'net_buy_amount';
+                dataLabel = '순매수 결제';
+                break;
+            }
+        
+        case "net_sell":
+            {
+                dataKey = 'net_sell_amount';
+                dataLabel = '순매도 결제';
+                break;
+            }
+    }
+
+    useEffect(() => {
+        setOrderBy(dataKey);
+        setOrder('desc');
+    }, [dataKey]);
+
     return(<section className={Style.table}>
         <Table>
             <EnhancedTableHead
@@ -122,9 +166,24 @@ export default observer(function BoardTableGrid() {
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
                 rowCount={rows.length}
+                dataKey={dataKey}
+                dataLabel={dataLabel}
             />
             <TableBody>
-                {rows.slice().sort(sortFunction).map((row, index) => {
+                {isLoading && <tr className="isLoading">
+                        <td>
+                            <Skeleton animation="wave" />
+                            <Typography variant="caption"><Skeleton animation="wave" width={50} /></Typography>
+                        </td>
+                        <td>
+                            <Skeleton animation="wave" />
+                            <Typography variant="caption"><Skeleton animation="wave" width={50} /></Typography>
+                        </td>
+                        <td>
+                            <Skeleton animation="wave" />
+                        </td>
+                    </tr>}
+                {!isLoading && rows.slice().sort(sortFunction).map((row, index) => {
                     const { isin, ticker } = row.info;
                     const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -151,7 +210,7 @@ export default observer(function BoardTableGrid() {
                                 <LocaleNumber>{row.base_price}</LocaleNumber>
                                 <Change point={row.change_price} percent={row.change_percent} />
                             </TableCell>
-                            <TableCell align="center"><LocaleNumber>{row.hold_amount}</LocaleNumber></TableCell>
+                            <TableCell align="center"><LocaleNumber>{row[dataKey]}</LocaleNumber></TableCell>
                         </TableRow>
                     );
                 })}
