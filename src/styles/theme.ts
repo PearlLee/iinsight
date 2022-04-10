@@ -5,6 +5,7 @@ export const theme = createTheme({
       mode: 'light',
       primary: {
         main: '#32ACE0',
+        contrastText: "#fff",
       },
       text: {
         primary: '#5E5E5E',

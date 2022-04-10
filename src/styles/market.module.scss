@@ -1,0 +1,27 @@
+@import 'function';
+@import 'common';
+
+.marketContainer {
+    @extend .box;
+    display:block;
+    padding-top:1rem;
+
+    .datePickerWrap {
+        display:inline-flex;
+        margin-bottom:.5rem;
+
+        hr {
+            margin-left:1rem;
+            margin-right:1rem;
+        }
+
+        :global .MuiButton-root {
+            margin-left:1rem;
+
+            box-shadow:none;
+        }
+    }
+    :global .MuiAlert-root {
+        margin:1rem 0;
+    }
+}

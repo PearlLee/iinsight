@@ -7,6 +7,7 @@ import GNB from './components/GNB';
 import StockAnalysis from './components/StockAnalysis';
 import NotFound from './components/NotFound';
 import './styles/app.scss';
+import MarketAnalysis from './components/MarketAnalysis';
 
 function App() {
     const [toggle, setToggle] = useState(true);
@@ -42,6 +43,7 @@ function App() {
                     <Route path="stockAnalysis" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />}>
                         <Route path=":isin" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />} />
                     </Route>
+                    <Route path="marketAnalysis" element={<MarketAnalysis />} />
                     <Route path="*" element={() => <NotFound />}/>
                 </Routes>
             </Router>
