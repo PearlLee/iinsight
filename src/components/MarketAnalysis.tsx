@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import { TextField, Alert, Divider, Button } from '@mui/material';
@@ -6,12 +6,12 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker} from '@mui/lab';
 
 import MarketAnalysisStore from "../stores/MarketAnalysisStore";
-import { MarketAnalysisStoreProvider } from "../providers/MarketStoreProvider";
+import { MarketAnalysisStoreProvider, useMarketAnalysisStore } from "../providers/MarketStoreProvider";
 import MarketChart from "./MarketAnalysis/MarketChart";
 import Style from '../styles/market.module.scss';
 
-export default observer(function MarketAnalysis() {
-    const marketAnalysisStore = useMemo(() => new MarketAnalysisStore(), []);
+const MarketAnalysisView = observer(function MarketAnalysisView() {
+    const marketAnalysisStore = useMarketAnalysisStore();
     const [diffDate, setDiffDate] = useState<Date | null>(null);
     const [baseDate, setBaseDate] = useState<Date | null>(null);
 
@@ -31,9 +31,7 @@ export default observer(function MarketAnalysis() {
         marketAnalysisStore.fetch(moment(baseDate).format("YYYY-MM-DD"), moment(diffDate).format("YYYY-MM-DD"));
     }
 
-
-    return(<MarketAnalysisStoreProvider>
-        <section className={"container " + Style.marketContainer}>
+    return(<section className={"container " + Style.marketContainer}>
             <header>
                 <div className={Style.datePickerWrap}>
                     <LocalizationProvider
@@ -41,10 +39,11 @@ export default observer(function MarketAnalysis() {
                     >
                         <DatePicker
                             label="기준일"
-                            value={diffDate}
+                            value={baseDate}
                             inputFormat="yyyy-MM-dd"
+                            mask="____-__-__"
                             onChange={(newValue) => {
-                                setDiffDate(newValue);
+                                setBaseDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
                         />
@@ -55,10 +54,11 @@ export default observer(function MarketAnalysis() {
                     >
                         <DatePicker
                             label="비교일"
-                            value={baseDate}
+                            value={diffDate}
                             inputFormat="yyyy-MM-dd"
+                            mask="____-__-__"
                             onChange={(newValue) => {
-                                setBaseDate(newValue);
+                                setDiffDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
                         />
@@ -69,6 +69,13 @@ export default observer(function MarketAnalysis() {
                 <Alert severity="info">기준일과 비교일을 지정하여 보유금액의 변화를 트리맵차트로 보여줍니다.</Alert>
             </header>
             <MarketChart stats={marketAnalysisStore.data} />
-        </section>
-    </MarketAnalysisStoreProvider>);
+        </section>);    
 });
+
+export default function MarketAnalysis() {
+    const marketAnalysisStore = useMemo(() => new MarketAnalysisStore(), []);
+
+    return(<MarketAnalysisStoreProvider store={marketAnalysisStore}>
+        <MarketAnalysisView />
+    </MarketAnalysisStoreProvider>);
+}
