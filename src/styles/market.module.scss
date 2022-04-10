@@ -16,9 +16,11 @@
         }
 
         :global .MuiButton-root {
+            flex-basis:80px;
             margin-left:1rem;
 
             box-shadow:none;
+            white-space:nowrap;
         }
     }
     :global .MuiAlert-root {
