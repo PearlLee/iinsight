@@ -5,6 +5,7 @@ import { visuallyHidden } from '@mui/utils';
 
 import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
 import IStockBoardData from '../../interfaces/IStockBoardData';
+import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/boardTable.module.scss';
@@ -147,10 +148,10 @@ export default observer(function BoardTableGrid() {
                                 </span>
                             </TableCell>
                             <TableCell>
-                                {row.base_price}
+                                <LocaleNumber>{row.base_price}</LocaleNumber>
                                 <Change point={row.change_price} percent={row.change_percent} />
                             </TableCell>
-                            <TableCell align="center">{row.hold_amount}</TableCell>
+                            <TableCell align="center"><LocaleNumber>{row.hold_amount}</LocaleNumber></TableCell>
                         </TableRow>
                     );
                 })}

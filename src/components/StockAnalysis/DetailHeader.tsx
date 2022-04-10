@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import { Divider } from '@mui/material';
 
 import { useStockAnalysisStore } from '../../providers/RootStoreProvider';
+import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/detail.module.scss';
@@ -19,7 +20,7 @@ export default observer(function Detail() {
                     <dl className={Style.price}>
                         <dt>기준가</dt>
                         <dd>
-                            {headerData.base_price}
+                            <LocaleNumber>{headerData.base_price}</LocaleNumber>
                             <Change point={headerData.change_price} percent={headerData.change_percent} />
                         </dd>
                     </dl>
@@ -28,19 +29,19 @@ export default observer(function Detail() {
                 <div className={Style.info}>
                     <dl>
                         <dt>전일 가격</dt>
-                        <dd>{headerData.prev_price}</dd>
+                        <dd><LocaleNumber>{headerData.prev_price}</LocaleNumber></dd>
                     </dl>
                     <dl>
                         <dt>보유 금액<IconDollar /></dt>
-                        <dd>{headerData.hold_amount}</dd>
+                        <dd><LocaleNumber>{headerData.hold_amount}</LocaleNumber></dd>
                     </dl>
                     <dl>
                         <dt>매수 결제<IconDollar /></dt>
-                        <dd>{headerData.buy_amount}</dd>
+                        <dd><LocaleNumber>{headerData.buy_amount}</LocaleNumber></dd>
                     </dl>
                     <dl>
                         <dt>매도 결제<IconDollar /></dt>
-                        <dd>{headerData.sell_amount}</dd>
+                        <dd><LocaleNumber>{headerData.sell_amount}</LocaleNumber></dd>
                     </dl>
                 </div>
             </header>

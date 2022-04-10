@@ -298,12 +298,15 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                     formatter: function (e: any, opts: any) {
                         switch (opts.seriesIndex) {
                             case 0:
+                                // 기준가
                                 return parseFloat(e).toFixed(2);
                             case 2:
-                                return e;
+                                // 보유 수량
+                                return e.toLocaleString();
                             case 1:
                             case 3:
                             case 4:
+                                // 매수, 매도, 보유 금액
                                 return "$" + parseFloat(e).toLocaleString();
                         }
                         return "";
