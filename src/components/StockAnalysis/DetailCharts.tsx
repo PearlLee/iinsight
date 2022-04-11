@@ -284,6 +284,9 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                 events: {
                     beforeZoom,
                     beforeResetZoom,
+                    mounted: () => {
+                        this.hideSeries();
+                    }
                 },
             },
             dataLabels: {
@@ -456,10 +459,14 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
         ];
     });
 
-    componentDidUpdate() {
-        this.resetYAxis();
+    hideSeries() {
         ApexCharts.exec("stock", "hideSeries", "매수금액");
         ApexCharts.exec("stock", "hideSeries", "매도금액");
+    }
+
+    componentDidUpdate() {
+        this.resetYAxis();
+        this.hideSeries();
     }
 
     render() {
