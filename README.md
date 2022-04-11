@@ -23,5 +23,6 @@ $ yarn storybook
 ## 배포하기
 
 ```
+$ heroku login
 $ yarn deploy
 ```
