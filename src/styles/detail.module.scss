@@ -108,8 +108,11 @@
             flex-basis:25%;
             margin:.1rem 0;
 
-            @media screen and (max-width:1500px) {
+            @media screen and (max-width:$min-width) {
                 flex-basis:50%;
+            }
+            @media screen and (max-width:$mobile-width) {
+                flex-basis:100%;
             }
 
             dt {
@@ -119,6 +122,10 @@
                 box-sizing:border-box;
                 opacity:.7;
                 white-space:nowrap;
+
+                @media screen and (max-width:$mobile-width) {
+                    flex-basis:auto;
+                }
             }
 
             dd {
