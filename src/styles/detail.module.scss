@@ -1,6 +1,25 @@
 @import 'function';
 @import 'common';
 
+.loading {
+    & > div:first-child {
+        margin-bottom:1rem;
+
+        & > *:nth-child(2) {
+            margin-top:-.6em;
+        }
+    }
+
+    & > div:last-child {
+        @extend .box;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height:70vh;
+    
+        text-align:center;
+    }
+}
 .header {
     .title {
         display:flex;
