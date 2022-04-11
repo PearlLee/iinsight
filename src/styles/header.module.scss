@@ -1,10 +1,10 @@
 @import 'common';
 
 .header {
-    @extend .box;
     display:flex;
     align-items:center;
 
+    background-color:$box;
     margin-bottom:2rem;
     padding:1rem 2rem;
 
@@ -17,6 +17,7 @@
     }
 
     h1 > a {
+        color:$text-block;
         font-size:2rem;
         font-weight:700;
 
@@ -32,12 +33,12 @@
                 margin-left:.3em;
             }
         }
-        @media screen and (min-width:1200px) {
+        @media screen and (min-width:$min-width) {
             margin-left:-1rem;
             padding-left:1rem;
             padding-right:1rem;
         }
-        @media screen and (max-width:1200px) {
+        @media screen and (max-width:$min-width) {
             & > span {
                 display:none;
             }
@@ -46,7 +47,7 @@
 
     .menu {
         align-items:center;
-        margin-left:2rem;
+        margin-left:1rem;
         
         & > * {
             @extend .box;
@@ -55,8 +56,9 @@
 
             color:$text;
             font-size:1.2rem;
+            white-space:nowrap;
 
-            @media screen and (min-width:1200px) {
+            @media screen and (min-width:$min-width) {
                 margin:0 2rem 0 0;
             
                 &:last-child {

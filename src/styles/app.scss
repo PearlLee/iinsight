@@ -17,6 +17,10 @@ html, body {
     max-width:$max-width;
     margin:0 auto;
     padding:0 2rem 4rem;
+
+    @media screen and (max-width:$min-width) {
+        display:block;
+    }
 }
 .detailContainer {
     flex-grow: 1;
@@ -37,13 +41,8 @@ html, body {
 
         background-color:$table-body-bg;
     }
-}
 
-@media screen and (max-width:1200px) {
-    .container {
-        display:block;
-    }
-    .boardTable {
+    @media screen and (max-width:$min-width) {
         position:fixed;
         top:0;
         left:0;
@@ -51,26 +50,36 @@ html, body {
         bottom:0;
         overflow:auto;
         z-index:99;
+        min-width:0;
         margin:0;
-        padding-left:4em;
+        padding-left:3.8rem;
 
-        background-color:rgba($bg, .8);
+        box-sizing:border-box;
+        transition:background-color .4s;
 
         &[area-hidden="true"] {
             overflow:hidden;
             z-index:-999;
-            min-width:0;
             width:0;
 
             opacity:0;
             pointer-events:none;
+
+            & > div {
+                transform:translateX(20%);
+            }
+        }
+        &[area-hidden="false"] {
+            background-color:rgba($bg, .8);
         }
 
         & > div {
+            max-width:460px;
             min-height:100vh;
-            margin-left:calc(20vw - 4em);
+            margin-left:auto;
 
             border-radius:0;
+            transition:transform .3s;
         }
     }
 }

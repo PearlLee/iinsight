@@ -2,12 +2,15 @@
 @import 'common';
 
 .buttonToggleBoard {
-    position:fixed !important;
+    position:fixed;
     top:1rem;
-    left:calc(20vw - 2rem - 2em);
+    right:0;
+    width:100%;
+    max-width:calc(460px + 4.8rem);
+    height:0;
+    padding:0 0 0 .6rem;
 
-    background-color:$box;
-    border-radius:100%;
+    box-sizing:border-box;
 }
 
 .header {
@@ -21,7 +24,7 @@
 .table {
     width:100%;
 
-    @media screen and (min-width:1200px) {
+    @media screen and (min-width:$min-width) {
         overflow:auto;
         max-height:calc(100vh - 200px - 8rem);
     }
