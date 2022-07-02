@@ -89,9 +89,7 @@ export default function BoardTableGrid(props: IProps) {
     const navigate = useNavigate();
     const query = useQuery(["BoardTable", { selectedTab: props.selectedTab }], async () => {
         const rankResult = await getRank(props.selectedTab);
-        if (routerIsin === undefined && rankResult.result.length > 0) {
-            navigate(rankResult.result[0].stockinfo.isin);
-        }
+
         return rankResult.result.map<IStockBoardData>((element) => {
             return {
                 info: element.stockinfo,
@@ -107,6 +105,14 @@ export default function BoardTableGrid(props: IProps) {
             }
         });
     });
+
+    // 페이지가 처음 로딩 되었을 때, 첫번째 종목이 선택되도록 함
+    useEffect(() => {
+        if (routerIsin === undefined && query.data !== undefined && query.data.length > 0) {
+            navigate(query.data[0].info.isin);
+        }
+    }, [routerIsin, query, navigate]);
+
     const rows = query.data || [];
     const isLoading = query.isLoading;
 
