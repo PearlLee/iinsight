@@ -1,17 +1,18 @@
-import { observer } from 'mobx-react';
 import { Divider } from '@mui/material';
 
-import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
+import { IStockDetailHeaderData } from "../../interfaces/IStockDetailData";
 import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/detail.module.scss';
 
-export default observer(function Detail() {
-    const stockAnalysisStore = useStockAnalysisStore();
-    const { headerData } = stockAnalysisStore.detailStore;
+interface IProps {
+    headerData: IStockDetailHeaderData,
+}
+export default function Detail(props: IProps) {
+    const { headerData } = props;
 
-    return(<>
+    return (<>
         {headerData !== null &&
             <header className={Style.header}>
                 <div className={Style.title}>
@@ -25,7 +26,7 @@ export default observer(function Detail() {
                         </dd>
                     </dl>
                 </div>
-                
+
                 <div className={Style.info}>
                     <dl>
                         <dt>전일 가격</dt>
@@ -47,4 +48,4 @@ export default observer(function Detail() {
             </header>
         }
     </>);
-});
+};

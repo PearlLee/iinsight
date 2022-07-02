@@ -1,24 +1,22 @@
 import { Component } from "react";
-import { observer } from "mobx-react";
 import Chart from "react-apexcharts";
 import moment from "moment";
 import memoize from "memoize-one";
 
 import { IStockDetailStat } from "../../interfaces/IStockDetailData";
-import { useStockAnalysisStore } from "../../providers/StockStoreProvider";
 import Style from '../../styles/detail.module.scss';
 
-interface StockDetailChartsViewProps {
+interface StockDetailChartsProps {
     stats: IStockDetailStat[];
 }
 
-interface StockDetaiChartsViewState {
+interface StockDetaiChartsState {
     options: ApexCharts.ApexOptions;
     optionsVolume: ApexCharts.ApexOptions;
 }
 
-class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockDetaiChartsViewState> {
-    constructor(props: StockDetailChartsViewProps) {
+export default class StockDetailCharts extends Component<StockDetailChartsProps, StockDetaiChartsState> {
+    constructor(props: StockDetailChartsProps) {
         super(props);
 
         this.state = this.createState();
@@ -181,7 +179,7 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
         ApexCharts.exec("volume", "updateOptions", { yaxis: this.createVolumeYAxisOption() });
     }
 
-    createState(): StockDetaiChartsViewState {
+    createState(): StockDetaiChartsState {
         const tickDay = 15;
 
         const setYAxis = (min: Date, max: Date, test: any) => {
@@ -480,12 +478,12 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
                     <div>차트 데이터 가져오는중...</div>
                 ) : (<>
                     <div>
-                        <Chart 
-                            options={this.state.options} 
-                            series={series} 
-                            type="line" 
-                            width="100%" 
-                            height="500" 
+                        <Chart
+                            options={this.state.options}
+                            series={series}
+                            type="line"
+                            width="100%"
+                            height="500"
                         />
                     </div>
                     <div>
@@ -502,10 +500,3 @@ class StockDetailChartsView extends Component<StockDetailChartsViewProps, StockD
         );
     }
 }
-
-export default observer(function StockDetailCharts() {
-    const stockAnalysisStore = useStockAnalysisStore();
-    const { stats } = stockAnalysisStore.detailStore;
-
-    return <StockDetailChartsView stats={stats} />;
-});
