@@ -9,5 +9,5 @@ export default {
     component: BoardTable
 } as ComponentMeta<typeof BoardTable>;
 
-const Template: ComponentStory<typeof BoardTab> = () => <BoardTab />;
+const Template: ComponentStory<typeof BoardTab> = () => <BoardTab onSelectTab={() => { }} />;
 export const boardTab = Template.bind({});
