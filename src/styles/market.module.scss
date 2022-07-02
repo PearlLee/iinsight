@@ -3,27 +3,38 @@
 
 .marketContainer {
     @extend .box;
-    display:block;
-    padding-top:1rem;
+    display: block;
+    padding-top: 1rem;
 
     .datePickerWrap {
-        display:inline-flex;
-        margin-bottom:.5rem;
+        display: inline-flex;
+        margin-bottom: .5rem;
 
         hr {
-            margin-left:1rem;
-            margin-right:1rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
         }
 
         :global .MuiButton-root {
-            flex-basis:80px;
-            margin-left:1rem;
+            flex-basis: 80px;
+            margin-left: 1rem;
 
-            box-shadow:none;
-            white-space:nowrap;
+            box-shadow: none;
+            white-space: nowrap;
         }
     }
+
     :global .MuiAlert-root {
-        margin:1rem 0;
+        margin: 1rem 0;
+    }
+
+    .loading {
+        @extend .box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 615px;
+
+        text-align: center;
     }
 }
