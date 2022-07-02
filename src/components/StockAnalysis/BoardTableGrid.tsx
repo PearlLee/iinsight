@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { observer } from 'mobx-react';
+import { useParams, useNavigate } from 'react-router';
+import { useQuery } from 'react-query';
 import { Box, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel, Skeleton, Typography } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 
-import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
+import { getRank } from "../../api";
 import IStockBoardData from '../../interfaces/IStockBoardData';
 import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
 import Style from '../../styles/boardTable.module.scss';
-    
+
 type Order = 'asc' | 'desc';
 
 interface IHeadCell {
@@ -32,8 +33,8 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
         props;
     const createSortHandler =
         (property: keyof IStockBoardData) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-    };
+            onRequestSort(event, property);
+        };
 
     let headCells: IHeadCell[] = [
         {
@@ -72,7 +73,7 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
                                 </Box>
                             ) : null}
                         </TableSortLabel>
-                        { index < headCells.length - 1 && <span className="divider"></span>}
+                        {index < headCells.length - 1 && <span className="divider"></span>}
                     </TableCell>
                 ))}
             </TableRow>
@@ -80,9 +81,40 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
     );
 }
 
-export default observer(function BoardTableGrid() {
-    const stockAnalysisStore = useStockAnalysisStore();
-    const { rows, selectedTab, isLoading } = stockAnalysisStore.boardStore;
+interface IProps {
+    selectedTab: string;
+}
+export default function BoardTableGrid(props: IProps) {
+    const { isin: routerIsin } = useParams();
+    const navigate = useNavigate();
+    const query = useQuery(["BoardTable", { selectedTab: props.selectedTab }], async () => {
+        const rankResult = await getRank(props.selectedTab);
+
+        return rankResult.result.map<IStockBoardData>((element) => {
+            return {
+                info: element.stockinfo,
+                base_price: element.base_price,
+                prev_price: element.prev_price,
+                hold_amount: element.hold_amount,
+                change_price: element.base_price - element.prev_price,
+                change_percent: (element.base_price - element.prev_price) / element.base_price * 100,
+                buy_amount: element.buy_amount,
+                sell_amount: element.sell_amount,
+                net_buy_amount: element.buy_amount - element.sell_amount,
+                net_sell_amount: element.sell_amount - element.buy_amount,
+            }
+        });
+    });
+
+    // 페이지가 처음 로딩 되었을 때, 첫번째 종목이 선택되도록 함
+    useEffect(() => {
+        if (routerIsin === undefined && query.data !== undefined && query.data.length > 0) {
+            navigate(query.data[0].info.isin);
+        }
+    }, [routerIsin, query, navigate]);
+
+    const rows = query.data || [];
+    const isLoading = query.isLoading;
 
     const [order, setOrder] = useState<Order>('desc');
     const [orderBy, setOrderBy] = useState<keyof IStockBoardData>('base_price');
@@ -90,20 +122,20 @@ export default observer(function BoardTableGrid() {
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
         property: keyof IStockBoardData,
-      ) => {
+    ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
     const handleClick = (event: React.MouseEvent<unknown>, isin: string) => {
-        stockAnalysisStore.setIsin(isin);
+        navigate(isin);
     };
 
     const sortFunction = (a: IStockBoardData, b: IStockBoardData): number => {
         if (orderBy === 'info') {
             let result = a.info.ticker.localeCompare(b.info.ticker);
-            return order === 'asc'? result: result*-1;
+            return order === 'asc' ? result : result * -1;
         }
         if (a[orderBy] < b[orderBy]) {
             return order === 'asc' ? -1 : 1;
@@ -119,7 +151,7 @@ export default observer(function BoardTableGrid() {
     let dataKey: keyof IStockBoardData = 'hold_amount';
     let dataLabel = '보유 금액';
 
-    switch(selectedTab) {
+    switch (props.selectedTab) {
         case "hold":
             {
                 dataKey = 'hold_amount';
@@ -144,7 +176,7 @@ export default observer(function BoardTableGrid() {
                 dataLabel = '순매수 결제';
                 break;
             }
-        
+
         case "net_sell":
             {
                 dataKey = 'net_sell_amount';
@@ -158,10 +190,10 @@ export default observer(function BoardTableGrid() {
         setOrder('desc');
     }, [dataKey]);
 
-    return(<section className={Style.table}>
+    return (<section className={Style.table}>
         <Table>
             <EnhancedTableHead
-                numSelected={rows.findIndex((item) => item.info.isin === stockAnalysisStore.isin)}
+                numSelected={rows.findIndex((item) => item.info.isin === routerIsin)}
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
@@ -171,20 +203,21 @@ export default observer(function BoardTableGrid() {
             />
             <TableBody>
                 {isLoading && <tr className="isLoading">
-                        <td>
-                            <Skeleton animation="wave" />
-                            <Typography variant="caption"><Skeleton animation="wave" width={50} /></Typography>
-                        </td>
-                        <td>
-                            <Skeleton animation="wave" />
-                            <Typography variant="caption"><Skeleton animation="wave" width={50} /></Typography>
-                        </td>
-                        <td>
-                            <Skeleton animation="wave" />
-                        </td>
-                    </tr>}
+                    <td>
+                        <Skeleton animation="wave" />
+                        <Typography variant="caption"><Skeleton animation="wave" width={50} /></Typography>
+                    </td>
+                    <td>
+                        <Skeleton animation="wave" />
+                        <Typography variant="caption"><Skeleton animation="wave" width={50} /></Typography>
+                    </td>
+                    <td>
+                        <Skeleton animation="wave" />
+                    </td>
+                </tr>}
                 {!isLoading && rows.slice().sort(sortFunction).map((row, index) => {
-                    const { isin, ticker } = row.info;
+                    const rowIsin = row.info.isin;
+                    const rowTicker = row.info.ticker;
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
@@ -193,15 +226,15 @@ export default observer(function BoardTableGrid() {
                             role="checkbox"
                             tabIndex={-1}
                             key={index}
-                            selected={isin === stockAnalysisStore.isin}
-                            onClick={(event) => handleClick(event, isin)}
+                            selected={rowIsin === routerIsin}
+                            onClick={(event) => handleClick(event, rowIsin)}
                         >
                             <TableCell
                                 component="th"
                                 id={labelId}
                                 scope="row"
                             >
-                                {ticker}
+                                {rowTicker}
                                 <span>
                                     {row.info.name}
                                 </span>
@@ -217,4 +250,4 @@ export default observer(function BoardTableGrid() {
             </TableBody>
         </Table>
     </section>);
-});
+};

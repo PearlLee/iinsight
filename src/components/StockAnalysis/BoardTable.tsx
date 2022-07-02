@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
 import BoardTab from './BoardTab';
-import BoardTableHeader from './BoardTableHeader';
+// import BoardTableHeader from './BoardTableHeader';
 import BoardTableGrid from './BoardTableGrid';
 import Style from '../../styles/boardTable.module.scss';
 
@@ -13,10 +14,17 @@ interface IBoardTableProps {
 }
 
 export default function BoardTable(props: IBoardTableProps) {
+    const [selectedTab, setSelectedTab] = useState("hold");
+
     const handlerToggleBoard = () => {
         props.toggleBoard(true);
     }
-    return(<section className="boardTable" area-hidden={props.toggle.toString()}>
+
+    const onChangeTab = (value: string) => {
+        setSelectedTab(value);
+    }
+
+    return (<section className="boardTable" area-hidden={props.toggle.toString()}>
         {
             props.media === 'small' &&
             <span className={Style.buttonToggleBoard}>
@@ -27,9 +35,9 @@ export default function BoardTable(props: IBoardTableProps) {
             </span>
         }
         <div>
-            <BoardTab />
-            <BoardTableHeader />
-            <BoardTableGrid  />
+            <BoardTab onSelectTab={onChangeTab} />
+            {/* <BoardTableHeader /> */}
+            <BoardTableGrid selectedTab={selectedTab} />
         </div>
     </section>);
 }

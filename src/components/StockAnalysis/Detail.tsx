@@ -1,17 +1,46 @@
-import { observer } from 'mobx-react';
+import { useParams } from 'react-router';
+import { useQuery } from 'react-query';
 import { Skeleton, Box, CircularProgress } from '@mui/material';
 
 import DetailHeader from './DetailHeader';
 import DetailCharts from './DetailCharts';
-import { useStockAnalysisStore } from '../../providers/StockStoreProvider';
+import { getDetail } from "../../api";
+import { IStockDetailStat } from "../../interfaces/IStockDetailData";
 import Style from '../../styles/detail.module.scss';
 
-export default observer(function Detail() {
-    const stockAnalysisStore = useStockAnalysisStore();
-    const { headerData } = stockAnalysisStore.detailStore;
+export default function Detail() {
+    const { isin } = useParams();
+    const query = useQuery(["StockDetail", { isin }], async () => {
+        if (isin === undefined) return;
+        const data = await getDetail(isin);
+        const { info, stats } = data;
 
-    return(<section className="detailContainer">
-        {headerData === null && 
+        return {
+            headerData: {
+                info: info.stockinfo,
+                base_price: info.base_price,
+                prev_price: info.prev_price,
+                hold_amount: info.hold_amount,
+                buy_amount: info.buy_amount,
+                sell_amount: info.sell_amount,
+                hold_quantify: info.hold_quantify,
+                buy_quantify: info.buy_quantify,
+                sell_quantify: info.sell_quantify,
+                change_price: info.base_price - info.prev_price,
+                change_percent: (info.base_price - info.prev_price) / info.base_price * 100,
+            },
+            stats: stats.map<IStockDetailStat>((element) => {
+                return {
+                    volume_amount: element.buy_amount + element.sell_amount,
+                    volume_quantify: element.buy_quantify + element.sell_quantify,
+                    ...element
+                }
+            })
+        }
+    });
+
+    return (<section className="detailContainer">
+        {query.isLoading &&
             <Box className={Style.loading}>
                 <div>
                     <Skeleton width="30%" height="4em" animation="wave" />
@@ -22,11 +51,11 @@ export default observer(function Detail() {
                 </div>
             </Box>
         }
-        {headerData !== null &&
+        {query.data !== undefined &&
             <>
-                <DetailHeader />
-                <DetailCharts />
+                <DetailHeader headerData={query.data.headerData} />
+                <DetailCharts stats={query.data.stats} />
             </>
         }
     </section>);
-});
+};

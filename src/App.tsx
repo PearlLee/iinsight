@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -8,6 +9,8 @@ import StockAnalysis from './components/StockAnalysis';
 import NotFound from './components/NotFound';
 import './styles/app.scss';
 import MarketAnalysis from './components/MarketAnalysis';
+
+const queryClient = new QueryClient();
 
 function App() {
     const [toggle, setToggle] = useState(true);
@@ -35,20 +38,22 @@ function App() {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Router>
-                <GNB toggleBoard={setToggleBoard} media={media} />
-                <Routes>
-                    <Route path="/" element={<Navigate replace to="/stockAnalysis" />} />
-                    <Route path="stockAnalysis" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />}>
-                        <Route path=":isin" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />} />
-                    </Route>
-                    <Route path="marketAnalysis" element={<MarketAnalysis />} />
-                    <Route path="*" element={() => <NotFound />}/>
-                </Routes>
-            </Router>
-        </ThemeProvider>
-        );
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <GNB toggleBoard={setToggleBoard} media={media} />
+                    <Routes>
+                        <Route path="/" element={<Navigate replace to="/stockAnalysis" />} />
+                        <Route path="stockAnalysis" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />}>
+                            <Route path=":isin" element={<StockAnalysis toggle={toggle} toggleBoard={setToggleBoard} media={media} />} />
+                        </Route>
+                        <Route path="marketAnalysis" element={<MarketAnalysis />} />
+                        <Route path="*" element={<NotFound />}/>
+                    </Routes>
+                </Router>
+            </ThemeProvider>
+        </QueryClientProvider>
+    );
 }
 
 export default App;
