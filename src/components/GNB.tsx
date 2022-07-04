@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { NavLink as RouterLink, useMatch } from 'react-router-dom';
 import { Button, Stack, IconButton } from '@mui/material';
 import { PushPin, Menu, MovingOutlined } from '@mui/icons-material';
 
@@ -106,6 +107,8 @@ const header = css`
 `;
 
 export default function GNB(props: IGNBProps) {
+    const matchStockAnalysis = useMatch("/stockAnalysis/:isin");
+
     const handlerToggleBoard = () => {
         props.toggleBoard(false);
     }
@@ -141,7 +144,7 @@ export default function GNB(props: IGNBProps) {
                 </RouterLink>
             </Stack>
             {
-                props.media === 'small' &&
+                (props.media === 'small' && matchStockAnalysis) &&
                 <IconButton className="buttonToggleBoard" onClick={handlerToggleBoard}>
                     <Menu />
                 </IconButton>
