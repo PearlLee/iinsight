@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import '../styles/app.scss';
+import '../styles/app.css';
 import BoardTable from '../components/StockAnalysis/BoardTable';
 import BoardTableGrid from '../components/StockAnalysis/BoardTableGrid';
 

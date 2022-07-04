@@ -1,8 +1,9 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { Component } from "react";
 import Chart from "react-apexcharts";
 
 import IMarketAnalysisData from "../../interfaces/IMarketAnalysisData";
-import Style from '../../styles/market.module.scss';
 
 interface ViewProps {
     stats: IMarketAnalysisData[];
@@ -12,7 +13,16 @@ interface ViewState {
     options: ApexCharts.ApexOptions;
 }
 
-class MarketChartView extends Component<ViewProps, ViewState> {
+const chart = css`
+    min-height:600px;
+    height:calc(100vh - 406px);
+
+    .apexcharts-tooltip {
+        padding:.2rem .4rem;
+    }
+`;
+
+export default class MarketChart extends Component<ViewProps, ViewState> {
     constructor(props: ViewProps) {
         super(props);
 
@@ -22,13 +32,12 @@ class MarketChartView extends Component<ViewProps, ViewState> {
     createState(): ViewState {
         const options: ApexCharts.ApexOptions = {
             chart: {
-                height: 500,
                 type: "treemap",
             },
             dataLabels: {
                 enabled: true,
                 style: {
-                    fontSize: "14px",
+                    fontSize: "24px",
                 },
                 formatter: function (x: number, op: any): string[] {
                     let seriesData = op.w.config.series[op.seriesIndex].data[op.dataPointIndex];
@@ -82,30 +91,17 @@ class MarketChartView extends Component<ViewProps, ViewState> {
         const series: any[] = this.computeSeries(stats);
 
         return (
-            <section className={Style.chart}>
-                {series.length === 0 ? (
-                    <div>차트 데이터 가져오는중...</div>
-                ) : (
-                    <div>
-                        <div>
-                            <Chart
-                                options={this.state.options}
-                                series={series}
-                                type="treemap"
-                                width="100%"
-                                height="600"
-                            />
-                        </div>
-                    </div>
-                )}
+            <section css={chart}>
+                {series.length > 0 &&
+                    <Chart
+                        options={this.state.options}
+                        series={series}
+                        type="treemap"
+                        width="100%"
+                        height="100%"
+                    />
+                }
             </section>
         );
     }
 }
-
-export default function MarketChart(props: ViewProps) {
-    return (
-        <MarketChartView {...props} />
-    );
-};
-
