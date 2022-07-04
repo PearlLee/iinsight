@@ -1,6 +1,6 @@
 # IISIGHT
 
-해외 주식 정보 통계 사이트 ( https://iinsight.herokuapp.com/ )
+해외 주식 정보 통계 사이트 ( https://iinsight.vercel.app/ )
 
 ## 기본 환경 설정
 
@@ -12,17 +12,4 @@ $ yarn install --dev
 
 ```
 $ yarn start
-```
-
-## Storybook
-
-```
-$ yarn storybook
-```
-
-## 배포하기
-
-```
-$ heroku login
-$ yarn deploy
 ```

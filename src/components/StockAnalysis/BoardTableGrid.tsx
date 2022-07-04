@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
@@ -9,7 +11,8 @@ import IStockBoardData from '../../interfaces/IStockBoardData';
 import LocaleNumber from '../LocaleNumber';
 import Change from '../Change';
 import IconDollar from '../IconDollar';
-import Style from '../../styles/boardTable.module.scss';
+import { colors } from '../../styles/theme';
+import { size } from '../../styles/Global';
 
 type Order = 'asc' | 'desc';
 
@@ -84,6 +87,106 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
 interface IProps {
     selectedTab: string;
 }
+
+const table = css`
+    width:100%;
+
+    @media screen and (min-width:${size.minWidth}) {
+        overflow:auto;
+        min-height:890px;
+        max-height:calc(100vh - 200px - 4rem);
+    }
+
+    table {
+        table-layout:fixed;
+    }
+    th,
+    td {
+        & > span {
+            display:block;
+        }
+    }
+
+    thead {
+        position:sticky;
+        top:0;
+        z-index:1;
+
+        th {
+            position:relative;
+            width:33.33%;
+            padding:0;
+
+            background-color:${colors.table.head.bg};
+            border-bottom:none;
+            color:${colors.table.head.text};
+
+            .MuiTableSortLabel-root {
+                padding:.5rem .2rem;
+                
+                &:hover {
+                    color:${colors.primary};
+                }
+
+                .MuiTableSortLabel-icon {
+                    margin:-.2em -1em 0 .2em;
+
+                    vertical-align:middle;
+                }
+            }
+
+            .divider {
+                display:inline-block;
+                position:absolute;
+                top:calc(50% - .4em);
+                right:0;
+                width:1px;
+                height:.8em;
+
+                background-color:${colors.divider.board};
+                vertical-align:middle;
+            }
+        }
+    }
+
+    tbody .MuiTableRow-root {
+        &:hover > .MuiTableCell-root {
+            background-color:${colors.button.hover.bg};
+            cursor:pointer;
+        }
+        &.Mui-selected > .MuiTableCell-root {
+            background-color:${colors.button.selected.bg};
+        }
+    }
+    tbody .MuiTableCell-root {
+        border-bottom-color:${colors.divider.table};
+    }
+    tbody th:first-of-type {
+        font-family:inherit;
+        
+        & > span {
+            color:${colors.text.primary};
+            font-size:.9em;
+            font-weight:400;
+            white-space:break-spaces;
+            opacity:.8;
+        }
+    }
+    tbody .isLoading > * {
+        padding:.2rem 1rem;
+
+        .MuiSkeleton-root {
+            width:60% !important;
+        }
+        & > .MuiSkeleton-root:first-of-type  {
+            width:90% !important;
+        }
+
+        &:last-of-type .MuiSkeleton-root {
+            margin:0 auto;
+        }
+    }
+`;
 export default function BoardTableGrid(props: IProps) {
     const { isin: routerIsin } = useParams();
     const navigate = useNavigate();
@@ -190,7 +293,7 @@ export default function BoardTableGrid(props: IProps) {
         setOrder('desc');
     }, [dataKey]);
 
-    return (<section className={Style.table}>
+    return (<section css={table}>
         <Table>
             <EnhancedTableHead
                 numSelected={rows.findIndex((item) => item.info.isin === routerIsin)}

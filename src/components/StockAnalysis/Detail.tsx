@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { useParams } from 'react-router';
 import { useQuery } from 'react-query';
 import { Skeleton, Box, CircularProgress } from '@mui/material';
@@ -6,7 +8,27 @@ import DetailHeader from './DetailHeader';
 import DetailCharts from './DetailCharts';
 import { getDetail } from "../../api";
 import { IStockDetailStat } from "../../interfaces/IStockDetailData";
-import Style from '../../styles/detail.module.scss';
+import { box } from '../../styles/Global';
+
+const loading = css`
+    & > div:first-of-type {
+        margin-bottom:1rem;
+
+        & > *:nth-of-type(2) {
+            margin-top:-.6em;
+        }
+    }
+
+    & > div:last-of-type {
+        ${box};
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height:60vh;
+    
+        text-align:center;
+    }
+`;
 
 export default function Detail() {
     const { isin } = useParams();
@@ -41,7 +63,7 @@ export default function Detail() {
 
     return (<section className="detailContainer">
         {query.isLoading &&
-            <Box className={Style.loading}>
+            <Box css={loading}>
                 <div>
                     <Skeleton width="30%" height="4em" animation="wave" />
                     <Skeleton width="50%" height="2em" animation="wave" />

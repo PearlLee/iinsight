@@ -1,10 +1,12 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { Component } from "react";
 import Chart from "react-apexcharts";
 import moment from "moment";
 import memoize from "memoize-one";
 
 import { IStockDetailStat } from "../../interfaces/IStockDetailData";
-import Style from '../../styles/detail.module.scss';
+import { box } from '../../styles/Global';
 
 interface StockDetailChartsProps {
     stats: IStockDetailStat[];
@@ -14,6 +16,26 @@ interface StockDetaiChartsState {
     options: ApexCharts.ApexOptions;
     optionsVolume: ApexCharts.ApexOptions;
 }
+
+const chart = css`
+    ${box}
+    padding:2rem 1rem;
+
+    box-sizing:border-box;
+
+    & > div {
+        &:not(:last-child) {
+            margin-bottom:2rem;
+        }
+    }
+
+    .apexcharts-canvas {
+        &,
+        & > svg {
+            width:100% !important;
+        }
+    }
+`;
 
 export default class StockDetailCharts extends Component<StockDetailChartsProps, StockDetaiChartsState> {
     constructor(props: StockDetailChartsProps) {
@@ -473,10 +495,8 @@ export default class StockDetailCharts extends Component<StockDetailChartsProps,
         const seriesVolume: any[] = this.computeSeriesVolume(stats);
 
         return (
-            <section className={Style.chartWrap}>
-                {series.length === 0 ? (
-                    <div>차트 데이터 가져오는중...</div>
-                ) : (<>
+            <section css={chart}>
+                {series.length > 0 && <>
                     <div>
                         <Chart
                             options={this.state.options}
@@ -495,7 +515,7 @@ export default class StockDetailCharts extends Component<StockDetailChartsProps,
                             height="150"
                         />
                     </div>
-                </>)}
+                </>}
             </section>
         );
     }
